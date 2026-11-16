@@ -38,52 +38,94 @@ async function main() {
   await books.deleteMany({});
 
   // ----------------------------------------------------------
-  // TODO 1 - insertOne with an embedded object
+  // DONE 1 - insertOne with an embedded object
   // ----------------------------------------------------------
   // In mongosh you would write:
   //   db.books.insertOne({ title: "...", publisher: { name: "...", country: "..." } })
+  await books.insertOne({
+    title: "Dune",
+    publisher: { name: "Chilton Books", country: "France" },
+  });
   //
   // Do the same here. Insert one book that has a publisher field
   // containing an embedded object with at least a name and a country.
 
   // ----------------------------------------------------------
-  // TODO 2 - insertOne with an array
+  // DONE 2 - insertOne with an array
   // ----------------------------------------------------------
   // Insert one book that has a tags field containing
   // an array of at least 3 strings.
+  await books.insertOne({
+    title: "The Hobbit",
+    tags: ["fantasy", "adventure", "classic"],
+  });
 
   // ----------------------------------------------------------
-  // TODO 3 - insertMany
+  // DONE 3 - insertMany
   // ----------------------------------------------------------
   // Insert at least 5 books in a single call using insertMany.
   // Include a mix: some with a publisher object, some with tags, some with both.
+  await books.insertMany([
+    {
+      title: "Foundation",
+      publisher: { name: "Gnome Press", country: "United States" },
+      tags: ["science fiction", "space", "classic"],
+    },
+    {
+      title: "1984",
+      publisher: { name: "Secker & Warburg", country: "United Kingdom" },
+    },
+    {
+      title: "The Little Prince",
+      tags: ["fiction", "philosophy", "children"],
+    },
+    {
+      title: "The Stranger",
+      publisher: { name: "Gallimard", country: "France" },
+      tags: ["fiction", "philosophy", "classic"],
+    },
+    {
+      title: "Pride and Prejudice",
+      publisher: { name: "T. Egerton", country: "United Kingdom" },
+      tags: ["romance", "classic", "fiction"],
+    },
+  ]);
 
   // ----------------------------------------------------------
-  // TODO 4 - find all documents
+  // DONE 4 - find all documents
   // ----------------------------------------------------------
   // Retrieve every document in the collection and log each title.
   // Hint: find() returns a cursor - call .toArray() to get an array.
+  const allBooks = await books.find({}).toArray();
+  allBooks.forEach((book) => console.log(book.title));
 
   // ----------------------------------------------------------
-  // TODO 5 - findOne with dot notation
+  // DONE 5 - findOne with dot notation
   // ----------------------------------------------------------
   // Find the first book whose publisher.country is "France".
   // Dot notation lets you filter on a field inside an embedded object:
   //   { "publisher.country": "France" }
   // Log the title of the result.
+  const frenchBook = await books.findOne({ "publisher.country": "France" });
+  console.log(frenchBook.title);
 
   // ----------------------------------------------------------
-  // TODO 6 - find with a filter
+  // DONE 6 - find with a filter
   // ----------------------------------------------------------
   // Find all books whose publisher.country is "France".
   // Log how many there are and list their titles.
+  const frenchBooks = await books.find({ "publisher.country": "France" }).toArray();
+  console.log(`French books: ${frenchBooks.length}`);
+  frenchBooks.forEach((book) => console.log(book.title));
 
   // ----------------------------------------------------------
-  // TODO 7 - find with $exists
+  // DONE 7 - find with $exists
   // ----------------------------------------------------------
   // Find all books that have a tags field, regardless of its value.
   //   { tags: { $exists: true } }
   // Log each title and its tags array.
+  const taggedBooks = await books.find({ tags: { $exists: true } }).toArray();
+  taggedBooks.forEach((book) => console.log(book.title, book.tags));
 
   // Always close the connection when you are done.
   await client.close();
