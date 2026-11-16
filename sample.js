@@ -114,7 +114,9 @@ async function main() {
   // ----------------------------------------------------------
   // Find all books whose publisher.country is "France".
   // Log how many there are and list their titles.
-  const frenchBooks = await books.find({ "publisher.country": "France" }).toArray();
+  const frenchBooks = await books
+    .find({ "publisher.country": "France" })
+    .toArray();
   console.log(`French books: ${frenchBooks.length}`);
   frenchBooks.forEach((book) => console.log(book.title));
 
