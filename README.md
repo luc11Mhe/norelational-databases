@@ -17,7 +17,7 @@ This lab walks you through that transition using a books collection.
 
 ## Setup
 
-Make sure MongoDB is running locally on port 27017, then install the driver:
+Make sure MongoDB is running  locally on port 27017, then install the driver:
 
 ```bash
 npm install
