@@ -1,3 +1,4 @@
+
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
@@ -7,6 +8,30 @@ const userSchema = new mongoose.Schema({
   // - skills: Array of Strings
   // - address: { city: String, country: String }
   // - avatar: String
+
+  name: {
+    type: String,
+    required: true,
+  },
+
+  email: {
+    type: String,
+    required: true,
+  },
+
+  skills: {
+    type: [String],
+    default: [],
+  },
+
+  address: {
+    city: String,
+    country: String,
+  },
+
+  avatar: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);
